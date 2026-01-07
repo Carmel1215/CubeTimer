@@ -42,10 +42,11 @@ final class TimerViewModel: ObservableObject {
         }
     }
     
-    func stop() {
+    func stop() -> RecordModel {
         displayTimer?.invalidate()
         elapsed = CACurrentMediaTime() - startTime
         state = .stopped
+        return RecordModel(time: elapsed)
     }
     
     func reset() {

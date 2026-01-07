@@ -9,7 +9,8 @@ import SwiftUI
 
 struct TimerView: View {
     
-    @StateObject private var vm = TimerViewModel()
+    @StateObject private var timerVM = TimerViewModel()
+    @ObservedObject var recordsVM: RecordsViewModel
     @State private var isReady = false
     
     var body: some View {
@@ -23,16 +24,17 @@ struct TimerView: View {
         .highPriorityGesture(
             TapGesture()
                 .onEnded {
-                    if vm.state == .running {
-                        vm.stop()
+                    if timerVM.state == .running {
+                        let record = timerVM.stop()
+                        recordsVM.addRecord(record: record)
                     }
                 }
         )
         .simultaneousGesture(
             LongPressGesture(minimumDuration: 0.5)
                 .onEnded { _ in
-                    if vm.state == .idle || vm.state == .stopped {
-                        vm.ready()
+                    if timerVM.state == .idle || timerVM.state == .stopped {
+                        timerVM.ready()
                         isReady = true
                     }
                 }
@@ -40,9 +42,9 @@ struct TimerView: View {
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
                 .onEnded { _ in
-                    if isReady && vm.state == .ready {
+                    if isReady && timerVM.state == .ready {
                         isReady = false
-                        vm.startFromReady()
+                        timerVM.startFromReady()
                     }
                 }
         )
@@ -52,12 +54,8 @@ struct TimerView: View {
     
     // 연산 프로퍼티
     var timeText: String {
-        String(format: "%.3f", vm.elapsed)
+        String(format: "%.3f", timerVM.elapsed)
     }
     
     
-}
-
-#Preview {
-    TimerView()
 }

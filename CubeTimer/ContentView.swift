@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject private var recordsVM = RecordsViewModel()
+    
     var body: some View {
         TabView {
             Tab("타이머", systemImage: "timer") {
-                TimerView()
+                TimerView(recordsVM: recordsVM)
             }
             Tab("기록", systemImage: "list.bullet") {
-                RecordsView()
+                RecordsView(recordsVM: recordsVM)
             }
             Tab("설정", systemImage: "gearshape") {
                 SettingsView()
