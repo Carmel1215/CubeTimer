@@ -15,11 +15,12 @@ struct TimerView: View {
     
     var body: some View {
         ZStack {
-            Color.gray
-                .ignoresSafeArea() // FIXME: 현재 상태에 따라 색깔 변경
+            backgroundColor
+                .ignoresSafeArea()
             
             Text(timeText)
                 .font(.system(size: 66, weight: .bold, design: .monospaced))
+                .foregroundStyle(foregroundColor)
         }
         .highPriorityGesture(
             TapGesture()
@@ -36,6 +37,8 @@ struct TimerView: View {
                     if timerVM.state == .idle || timerVM.state == .stopped {
                         timerVM.ready()
                         isReady = true
+                        let haptic = UIImpactFeedbackGenerator(style: .medium)
+                        haptic.impactOccurred()
                     }
                 }
         )
@@ -57,5 +60,20 @@ struct TimerView: View {
         String(format: "%.3f", timerVM.elapsed)
     }
     
+    var backgroundColor: Color {
+        switch timerVM.state {
+        case .idle: return .white
+        case .ready: return .green
+        case .running: return .black
+        // case .stopped: return .red // ???: 쓸 지는 모르겠음. 애초에 stopped가 필요한가?
+        default: return .white
+        }
+    }
     
+    var foregroundColor: Color {
+        switch timerVM.state {
+        case .running: return .white
+        default: return .black
+        }
+    }
 }

@@ -29,11 +29,11 @@ struct RecordsView: View {
                             
                             Spacer()
                         }
-                        .padding(10) // FIXME: 길게 눌러 선택하면 Radius가 적용되지 않고 직사각형이 잠시 보이는 문제
-                        .glassEffect(in: .rect(cornerRadius: 16))
+                        .padding(10)
+                        .contentShape(RoundedRectangle(cornerRadius: 16))  // FIXME: 길게 눌러 선택하면 Radius가 적용되지 않고 직사각형이 잠시 보이는 문제
                         .contextMenu {
                             Button {
-                                // TODO: 수정 로직
+                                // TODO: 수정 로직 작성
                             } label: {
                                 Label("수정", systemImage: "pencil")
                             }
@@ -53,4 +53,9 @@ struct RecordsView: View {
             .navigationTitle("기록")
         }
     }
+}
+
+#Preview {
+    // TODO: 테스트 코드 작성
+    // RecordsView(recordsVM: )
 }
