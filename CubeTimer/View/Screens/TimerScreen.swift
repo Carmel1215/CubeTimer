@@ -15,7 +15,7 @@ struct TimerScreen: View {
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
-            Text("00:00:00")
+            Text("\(store.elapsed)")
                 .font(.system(size: 64, design: .monospaced))
                 .bold()
                 .foregroundStyle(store.timerState == .running ? .white : .black)
@@ -24,20 +24,16 @@ struct TimerScreen: View {
         .highPriorityGesture(
             TapGesture()
                 .onEnded {
-                    if store.timerState == .running {
-                        store.timerState = .stopped
-                    }
+                    store.stop()
                 }
         )
         .gesture(
             LongPressGesture(minimumDuration: 0.5)
                 .onEnded { _ in
-                    if store.timerState == .stopped {
-                        store.timerState = .ready
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.prepare()
-                        generator.impactOccurred()
-                    }
+                    store.ready()
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.prepare()
+                    generator.impactOccurred()
                 }
         )
         .simultaneousGesture(
@@ -46,9 +42,7 @@ struct TimerScreen: View {
                     state = true // 터치 중
                 }
                 .onEnded { _ in
-                    if store.timerState == .ready {
-                        store.timerState = .running
-                    }
+                    store.start()
                 }
         )
     }
