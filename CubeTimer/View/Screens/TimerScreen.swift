@@ -8,15 +8,8 @@
 import SwiftUI
 
 struct TimerScreen: View {
+    @StateObject private var store: TimerStore = TimerStore()
     
-    enum TimerState {
-        case ready
-        case running
-        case stopped
-    }
-    
-    @State private var timerState: TimerState = .stopped
-
     @GestureState private var isTouching = false
 
     var body: some View {
@@ -25,22 +18,22 @@ struct TimerScreen: View {
             Text("00:00:00")
                 .font(.system(size: 64, design: .monospaced))
                 .bold()
-                .foregroundStyle(timerState == .running ? .white : .black)
+                .foregroundStyle(store.timerState == .running ? .white : .black)
         }
         .contentShape(Rectangle())
         .highPriorityGesture(
             TapGesture()
                 .onEnded {
-                    if timerState == .running {
-                        timerState = .stopped
+                    if store.timerState == .running {
+                        store.timerState = .stopped
                     }
                 }
         )
         .gesture(
             LongPressGesture(minimumDuration: 0.5)
                 .onEnded { _ in
-                    if timerState == .stopped {
-                        timerState = .ready
+                    if store.timerState == .stopped {
+                        store.timerState = .ready
                         let generator = UIImpactFeedbackGenerator(style: .medium)
                         generator.prepare()
                         generator.impactOccurred()
@@ -53,15 +46,15 @@ struct TimerScreen: View {
                     state = true // 터치 중
                 }
                 .onEnded { _ in
-                    if timerState == .ready {
-                        timerState = .running
+                    if store.timerState == .ready {
+                        store.timerState = .running
                     }
                 }
         )
     }
 
     var backgroundColor: Color {
-        switch timerState {
+        switch store.timerState {
         case .stopped: return .white
         case .ready: return .green
         case .running: return .black
