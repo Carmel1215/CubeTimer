@@ -6,3 +6,10 @@
 //
 
 import Foundation
+import SwiftData
+
+class RecordStore {
+    func saveRecord(_ record: Record, in context: ModelContext) {
+        context.insert(record)
+    }
+}

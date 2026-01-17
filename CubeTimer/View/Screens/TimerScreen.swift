@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TimerScreen: View {
     @StateObject private var store: TimerStore = TimerStore()
+    @Environment(\.modelContext) private var modelContext
+    let recordStore: RecordStore = RecordStore()
 
     var body: some View {
         ZStack {
@@ -22,7 +24,9 @@ struct TimerScreen: View {
         .highPriorityGesture(
             TapGesture()
                 .onEnded {
+                    guard store.timerState == .running else { return }
                     store.stop()
+                    recordStore.saveRecord(Record(time: store.elapsed), in: modelContext)
                 }
         )
         .gesture(

@@ -6,13 +6,15 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Record {
-    let id: UUID
-    let createdAt: Date
-    let time: Double
+@Model
+final class Record {
+    var id: UUID
+    var createdAt: Date
+    var time: Double
     
-    init (id: UUID = UUID(), createdAt: Date = Date(), time: Double) {
+    init (id: UUID = UUID(), createdAt: Date = Date.now, time: Double) {
         self.id = id
         self.createdAt = createdAt
         self.time = time

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct CubeTimerApp: App {
@@ -13,5 +14,6 @@ struct CubeTimerApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: Record.self)
     }
 }
