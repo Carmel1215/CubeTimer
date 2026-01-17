@@ -14,10 +14,10 @@ struct ContentView: View {
                 TimerScreen()
             }
             Tab("기록", systemImage: "list.bullet") {
-                
+                RecordScreen()
             }
             Tab("설정", systemImage: "gearshape") {
-                
+                SettingScreen()
             }
         }
     }

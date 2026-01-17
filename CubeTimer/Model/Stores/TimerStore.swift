@@ -51,5 +51,9 @@ final class TimerStore: ObservableObject {
             
         }
     }
+    
+    func formatText(time: Double) -> String {
+        return String(format: "%.3f", time)
+    }
     // TODO: SwiftData 사용법 알아보기
 }

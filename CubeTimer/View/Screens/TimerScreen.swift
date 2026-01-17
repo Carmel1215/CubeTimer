@@ -9,13 +9,11 @@ import SwiftUI
 
 struct TimerScreen: View {
     @StateObject private var store: TimerStore = TimerStore()
-    
-    @GestureState private var isTouching = false
 
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
-            Text("\(store.elapsed)")
+            Text("\(store.formatText(time: store.elapsed))")
                 .font(.system(size: 64, design: .monospaced))
                 .bold()
                 .foregroundStyle(store.timerState == .running ? .white : .black)
@@ -38,9 +36,6 @@ struct TimerScreen: View {
         )
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
-                .updating($isTouching) { _, state, _ in
-                    state = true // 터치 중
-                }
                 .onEnded { _ in
                     store.start()
                 }
